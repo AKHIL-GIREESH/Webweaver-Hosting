@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "web" {
-  ami                    = "ami-0e35ddab05955cf57"
+  ami                    = "ami-0388fba141566abaf"
   instance_type          = "t2.medium"
   key_name               = aws_key_pair.rsaa.id
   vpc_security_group_ids = [aws_security_group.ssh-access.id]
@@ -35,6 +35,13 @@ resource "aws_security_group" "ssh-access" {
   ingress {
     from_port   = 8080
     to_port     = 8080
+    protocol    = "TCP"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 3000
+    to_port     = 3000
     protocol    = "TCP"
     cidr_blocks = ["0.0.0.0/0"]
   }
