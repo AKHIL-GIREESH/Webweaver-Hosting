@@ -1,6 +1,9 @@
 const Website = require('../models/websiteSchema'); 
+const { execSync } = require("child_process");
+const fs = require("fs");
+const path = require("path");
 
-function waitForSSH(instanceIp) {
+function waitForSSH(instanceIp, sshKey) {
     console.log(`⏳ Waiting for SSH to become available at ${instanceIp}...`);
 
     let sshReady = false;
@@ -9,7 +12,7 @@ function waitForSSH(instanceIp) {
 
     while (!sshReady && retries < maxRetries) {
         try {
-            execSync(`ssh -o StrictHostKeyChecking=no -i /Users/akhilgireesh/.ssh/id_rsa ubuntu@${instanceIp} "echo SSH Ready"`, { stdio: "inherit" });
+            execSync(`ssh -o StrictHostKeyChecking=no -i ${sshKey} ubuntu@${instanceIp} "echo SSH Ready"`, { stdio: "inherit" });
             sshReady = true;
         } catch (error) {
             retries++;
@@ -25,77 +28,64 @@ function waitForSSH(instanceIp) {
     console.log("✅ SSH is now available!");
 }
 
-const getProject = async (req, res) => {
-  try {
-    const { id } = req.params;
-    console.log(id)
-
-    const website = await Website.findOne({_id:id})
-
-    if (!website) {
-      return res.status(404).json({ error: 'Website not found' });
-    }
-
-    res.status(200).json(website);
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Server error' });
-  }
-};
-
-const HostProject = async (req,res) => {
+const HostProject = async (req, res) => {
     try {
         const { id } = req.params;
-        console.log(id)
-    
-        const website = await Website.findOne({_id:id})
-    
+        const sshKey = "/Users/akhilgireesh/.ssh/id_rsa";
+        const terraformDir = __dirname;
+
+        console.log(`🔍 Looking up project with ID: ${id}`);
+        const website = await Website.findOne({ _id: id });
+
         if (!website) {
-          return res.status(404).json({ error: 'Website not found' });
+            return res.status(404).json({ error: 'Website not found' });
         }
 
-        const {code} = website
-    
-        // res.status(200).json(website);
-
-        const terraformDir = __dirname
+        const { code } = website;
 
         console.log("🚀 Initializing Terraform...");
         execSync("terraform init", { cwd: terraformDir, stdio: "inherit" });
-    
-        console.log("🚀 Running Terraform...");
+
+        console.log("🚀 Applying Terraform...");
         execSync("terraform apply -auto-approve", { cwd: terraformDir, stdio: "inherit" });
-    
+
         console.log("✅ Terraform applied successfully!");
-    
+
         const instanceIpPath = path.join(terraformDir, "instance_ip.txt");
         const instanceIp = fs.readFileSync(instanceIpPath, "utf8").trim();
-
         console.log(`📌 Instance IP: ${instanceIp}`);
-    
-        console.log("⏳ Waiting for instance to initialize...");
-        
-        waitForSSH(instanceIp);
+
+        console.log("⏳ Waiting for instance to initialize SSH...");
+        waitForSSH(instanceIp, sshKey);
 
         const localJsonPath = path.join(__dirname, 'web.json');
 
-        // 1. Convert `Map` to plain object and write to web.json
+        // 🔧 Convert Map to plain object & save as web.json
         const codeObject = Object.fromEntries(code);
         fs.writeFileSync(localJsonPath, JSON.stringify(codeObject, null, 2));
+        console.log("📝 web.json created.");
 
-        // 2. Send `web.json` to instance
-        // execSync(`scp -i ${sshKey} ${localJsonPath} ubuntu@${instanceIp}:/home/ubuntu//web.json`, {
-        // stdio: 'inherit',
-        // });
-        res.status(200).json(website);
-        
-      } catch (err) {
-        console.error(err);
+        // 📦 Send web.json to EC2
+        console.log("📤 Sending web.json to instance...");
+        execSync(`scp -i ${sshKey} ${localJsonPath} ubuntu@${instanceIp}:/home/ubuntu/webweaver-website/src/web.json`, {
+            stdio: "inherit",
+        });
+
+        console.log("🚀 Starting Vite dev server in background...");
+        execSync(
+        `ssh -i ${sshKey} ubuntu@${instanceIp} 'cd /home/ubuntu/webweaver-website && npm install && nohup npm run dev -- --host 0.0.0.0 > vite.log 2>&1 < /dev/null &'`,
+        { stdio: 'inherit' }
+        );
+        console.log("✅ Vite dev server started remotely!");
+
+
+        console.log("✅ Project hosted successfully!");
+        res.status(200).json({ message: "Hosted successfully", instanceIp, website });
+
+    } catch (err) {
+        console.error("❌ Error in HostProject:", err);
         res.status(500).json({ error: 'Server error' });
     }
-}
+};
 
-
-
-module.exports = { getProject,HostProject };
+module.exports = { HostProject };

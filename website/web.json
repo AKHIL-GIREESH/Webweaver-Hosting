@@ -1,0 +1,67 @@
+{
+  "id": "1",
+  "styles": {
+    "minHeight": "200px",
+    "width": "200px",
+    "height": "fit-content",
+    "resize": "both",
+    "overflow": "auto",
+    "border": "1px solid red"
+  },
+  "kind": "Container",
+  "contents": [
+    {
+      "styles": {
+        "border": "1px solid"
+      },
+      "kind": "Elem",
+      "contents": "works",
+      "parent": "1",
+      "id": "764e9616-f591-4be3-ab5c-0970cc74c32b"
+    },
+    {
+      "parent": "1",
+      "id": "6efdc679-cc01-4917-8372-4d95252f34d8",
+      "styles": {
+        "border": "1px solid",
+        "minHeight": "200px",
+        "width": "200px",
+        "height": "fit-content"
+      },
+      "kind": "Container",
+      "contents": [
+        {
+          "parent": "6efdc679-cc01-4917-8372-4d95252f34d8",
+          "id": "825e064c-b63c-4dc0-a6fd-bd877bf67b7f",
+          "styles": {
+            "minHeight": "200px",
+            "width": "200px",
+            "height": "fit-content",
+            "resize": "both",
+            "overflow": "auto",
+            "backgroundColor": "red",
+            "border": "1px solid red"
+          },
+          "kind": "Container",
+          "contents": null
+        }
+      ]
+    },
+    {
+      "styles": {
+        "resize": "both",
+        "overflow": "auto",
+        "backgroundColor": "red",
+        "border": "1px solid red",
+        "minHeight": "200px",
+        "width": "200px",
+        "height": "fit-content"
+      },
+      "kind": "Container",
+      "contents": null,
+      "parent": "1",
+      "id": "3dc0e94e-a9b8-4f54-b3b8-b7008b120d21"
+    }
+  ],
+  "parent": "0"
+}
