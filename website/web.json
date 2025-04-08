@@ -1,67 +1,50 @@
 {
+  "parent": "0",
   "id": "1",
   "styles": {
-    "minHeight": "200px",
-    "width": "200px",
-    "height": "fit-content",
-    "resize": "both",
-    "overflow": "auto",
-    "border": "1px solid red"
+    "border": "1px solid",
+    "minHeight": "70vh",
+    "width": "70vw",
+    "height": "fit-content"
   },
   "kind": "Container",
   "contents": [
     {
+      "parent": "1",
+      "id": "9ecfd61a-8de0-4f9f-8fda-7f53bd07f4c0",
       "styles": {
+        "minHeight": "30vh",
+        "width": "60vw",
+        "height": "fit-content",
+        "opacity": 0.9,
+        "backgroundColor": "#915050",
+        "borderRadius": "60px",
         "border": "1px solid"
       },
-      "kind": "Elem",
-      "contents": "works",
-      "parent": "1",
-      "id": "764e9616-f591-4be3-ab5c-0970cc74c32b"
+      "kind": "Container",
+      "contents": []
     },
     {
       "parent": "1",
-      "id": "6efdc679-cc01-4917-8372-4d95252f34d8",
+      "id": "83d47819-d5ff-42e3-831c-8e0b3b8d33c5",
       "styles": {
         "border": "1px solid",
-        "minHeight": "200px",
-        "width": "200px",
-        "height": "fit-content"
+        "color": "#dcc6c6"
       },
-      "kind": "Container",
-      "contents": [
-        {
-          "parent": "6efdc679-cc01-4917-8372-4d95252f34d8",
-          "id": "825e064c-b63c-4dc0-a6fd-bd877bf67b7f",
-          "styles": {
-            "minHeight": "200px",
-            "width": "200px",
-            "height": "fit-content",
-            "resize": "both",
-            "overflow": "auto",
-            "backgroundColor": "red",
-            "border": "1px solid red"
-          },
-          "kind": "Container",
-          "contents": null
-        }
-      ]
+      "kind": "Elem",
+      "contents": "Some text"
     },
     {
+      "parent": "1",
+      "id": "d028366a-effd-49c1-83c6-7ac8305c892f",
       "styles": {
-        "resize": "both",
-        "overflow": "auto",
-        "backgroundColor": "red",
-        "border": "1px solid red",
-        "minHeight": "200px",
-        "width": "200px",
-        "height": "fit-content"
+        "minHeight": "30vh",
+        "width": "60vw",
+        "height": "fit-content",
+        "border": "1px solid"
       },
       "kind": "Container",
-      "contents": null,
-      "parent": "1",
-      "id": "3dc0e94e-a9b8-4f54-b3b8-b7008b120d21"
+      "contents": []
     }
-  ],
-  "parent": "0"
+  ]
 }
