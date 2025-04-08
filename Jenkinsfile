@@ -85,27 +85,89 @@ CMD ["sh", "-c", "npm run dev -- --host"]
             }
         }
 
-        stage('Run Container') {
-            steps {
-                sh 'docker run -d --name my_app_container -p 3000:5173 $IMAGE_NAME'
-            }
+        // stage('Run Container') {
+        //     steps {
+        //         sh 'docker run -d --name my_app_container -p 3000:5173 $IMAGE_NAME'
+        //     }
+        // }
+        stage('Deploy to k3s') {
+    steps {
+        script {
+            def deploymentYaml = """
+                apiVersion: apps/v1
+                kind: Deployment
+                metadata:
+                name: webweaver-deployment
+                spec:
+                replicas: 2
+                selector:
+                    matchLabels:
+                    app: webweaver
+                template:
+                    metadata:
+                    labels:
+                        app: webweaver
+                    spec:
+                    containers:
+                    - name: webweaver-container
+                        image: ${env.IMAGE_NAME}
+                        ports:
+                        - containerPort: 5173
+                        resources:
+                        requests:
+                            cpu: "100m"
+                            memory: "128Mi"
+                        limits:
+                            cpu: "500m"
+                            memory: "256Mi"
+                ---
+                apiVersion: v1
+                kind: Service
+                metadata:
+                name: webweaver-service
+                spec:
+                selector:
+                    app: webweaver
+                ports:
+                    - protocol: TCP
+                    port: 3000
+                    targetPort: 5173
+                type: LoadBalancer
+                """
+                        writeFile file: 'k3s-deploy.yaml', text: deploymentYaml
+                            sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config apply -f k3s-deploy.yaml'
+                            
+                            // Autoscaler stage (merged in here or separated)
+                            sh '''
+                            kubectl --kubeconfig=/var/lib/jenkins/.kube/config autoscale deployment webweaver-deployment \
+                            --cpu-percent=50 \
+                            --min=2 \
+                            --max=5
+                            '''
+                            
+                            sh 'kubectl --kubeconfig=/var/lib/jenkins/.kube/config get hpa'
+
+
         }
+    }
+}
+
     }
 
-    post {
-        success {
-            emailext (
-                subject: "✅ Jenkins Pipeline Success: ${env.JOB_NAME}",
-                body: "The pipeline for ${env.JOB_NAME} completed successfully! 🎉",
-                to: "${env.CUSTOM_EMAIL}",
-            )
-        }
-        failure {
-            emailext (
-                subject: "❌ Jenkins Pipeline Failed: ${env.JOB_NAME}",
-                body: "The pipeline for ${env.JOB_NAME} failed. Please check the logs.",
-                to: "${env.CUSTOM_EMAIL}",
-            )
-        }
-    }
+    // post {
+    //     success {
+    //         emailext (
+    //             subject: "✅ Jenkins Pipeline Success: ${env.JOB_NAME}",
+    //             body: "The pipeline for ${env.JOB_NAME} completed successfully! 🎉",
+    //             to: "${env.CUSTOM_EMAIL}",
+    //         )
+    //     }
+    //     failure {
+    //         emailext (
+    //             subject: "❌ Jenkins Pipeline Failed: ${env.JOB_NAME}",
+    //             body: "The pipeline for ${env.JOB_NAME} failed. Please check the logs.",
+    //             to: "${env.CUSTOM_EMAIL}",
+    //         )
+    //     }
+    // }
 }
