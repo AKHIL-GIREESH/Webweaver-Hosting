@@ -123,7 +123,7 @@ const hostReact = async (req, res) => {
 
     let instanceIp;
 
-    if (req.body.ip.length === 0) {
+    if (req.body.instanceip.length === 0) {
       const terraformDir = __dirname;
 
       console.log("🚀 Initializing Terraform...");
@@ -169,7 +169,7 @@ const hostReact = async (req, res) => {
 
     const newHosting = new Hosting({
       title: req.body.title,
-      thumbnail: req.body.thumbnail || null,
+      thumbnail: req.body.thumbnail || "",
       author: req.body.author,
       ip: instanceIp,
     });

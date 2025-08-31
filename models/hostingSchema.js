@@ -5,7 +5,7 @@ const { Schema, Types } = mongoose;
 const HostingSchema = new Schema({
   title: { type: String, required: false },
   thumbnail: { type: String, required: false },
-  author: { type: Types.ObjectId, ref: "User", required: false },
+  author: { type: String },
   ip: { type: String, required: true },
 });
 
