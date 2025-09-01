@@ -12,6 +12,6 @@ const WebsiteSchema = new Schema({
   kind: { type: String, required: false },
 });
 
-const Website = mongoose.model("Website", WebsiteSchema, "websites");
+const Website = mongoose.model("Website", WebsiteSchema, "project");
 
 module.exports = Website;

@@ -1,50 +1,26 @@
 {
+  "kind": "Container",
   "parent": "0",
-  "id": "1",
   "styles": {
     "border": "1px solid",
+    "height": "fit-content",
     "minHeight": "70vh",
-    "width": "70vw",
-    "height": "fit-content"
+    "width": "70vw"
   },
-  "kind": "Container",
   "contents": [
     {
-      "parent": "1",
-      "id": "9ecfd61a-8de0-4f9f-8fda-7f53bd07f4c0",
-      "styles": {
-        "minHeight": "30vh",
-        "width": "60vw",
-        "height": "fit-content",
-        "opacity": 0.9,
-        "backgroundColor": "#915050",
-        "borderRadius": "60px",
-        "border": "1px solid"
-      },
+      "contents": [],
+      "id": "e5402126-fd0c-4330-a600-90b3f829269c",
       "kind": "Container",
-      "contents": []
-    },
-    {
       "parent": "1",
-      "id": "83d47819-d5ff-42e3-831c-8e0b3b8d33c5",
       "styles": {
+        "backgroundColor": "#ffe433",
         "border": "1px solid",
-        "color": "#dcc6c6"
-      },
-      "kind": "Elem",
-      "contents": "Some text"
-    },
-    {
-      "parent": "1",
-      "id": "d028366a-effd-49c1-83c6-7ac8305c892f",
-      "styles": {
-        "minHeight": "30vh",
-        "width": "60vw",
         "height": "fit-content",
-        "border": "1px solid"
-      },
-      "kind": "Container",
-      "contents": []
+        "minHeight": "30vh",
+        "width": "60vw"
+      }
     }
-  ]
+  ],
+  "id": "1"
 }
