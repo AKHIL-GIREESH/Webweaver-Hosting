@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "web" {
-  ami                    = "ami-0388fba141566abaf"
+  ami                    = "ami-01f97fb0db985f7a1"
   instance_type          = "t2.medium"
   key_name               = aws_key_pair.rsaa.id
   vpc_security_group_ids = [aws_security_group.ssh-access.id]
