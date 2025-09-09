@@ -2,6 +2,7 @@ const Website = require("../models/websiteSchema");
 const { execSync } = require("child_process");
 const fs = require("fs");
 const path = require("path");
+const Hosting = require("../models/hostingSchema");
 
 function waitForSSH(instanceIp, sshKey) {
   console.log(`⏳ Waiting for SSH to become available at ${instanceIp}...`);
@@ -46,7 +47,7 @@ const HostProject = async (req, res) => {
       return res.status(404).json({ error: "Website not found" });
     }
 
-    const { code } = website;
+    const { code, title, thumbnail, author } = website;
 
     console.log("🚀 Initializing Terraform...");
     execSync("terraform init", { cwd: terraformDir, stdio: "inherit" });
@@ -84,11 +85,26 @@ const HostProject = async (req, res) => {
 
     console.log("🚀 Starting Vite dev server in background...");
     execSync(
-      `ssh -T -i ${sshKey} ubuntu@${instanceIp} 'cd /home/ubuntu/webweaver-website && npm install && nohup npm run dev -- --host 0.0.0.0 > vite.log 2>&1 & disown'`,
-      { stdio: "inherit" }
+      `ssh -f -i ${sshKey} ubuntu@${instanceIp} 'cd /home/ubuntu/webweaver-website && npm install && nohup npm run dev -- --host 0.0.0.0 > vite.log 2>&1'`,
+      { stdio: "ignore" }
     );
 
     console.log("✅ Vite dev server started remotely!");
+
+    // Save hosting details to MongoDB
+    const newHosting = new Hosting({
+      title: title,
+      thumbnail: thumbnail || "",
+      author: author,
+      ip: instanceIp,
+    });
+
+    try {
+      const savedHosting = await newHosting.save();
+      console.log("✅ New hosting entry saved to MongoDB:", savedHosting._id);
+    } catch (err) {
+      console.error("❌ Error saving hosting entry:", err.message);
+    }
 
     console.log("✅ Project hosted successfully!");
     res
