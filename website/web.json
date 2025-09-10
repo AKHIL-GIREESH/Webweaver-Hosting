@@ -1,41 +1,43 @@
 {
+  "styles": {
+    "overflowY": "scroll",
+    "border": "1px solid",
+    "maxHeight": "70vh",
+    "maxWidth": "70vw",
+    "minHeight": "70vh",
+    "minWidth": "70vw"
+  },
   "contents": [
     {
-      "styles": {
-        "backgroundColor": "#bd5151",
-        "border": "1px solid",
-        "borderRadius": "15px",
-        "height": 276,
-        "minHeight": "30vh",
-        "opacity": 1,
-        "width": 992
-      },
       "contents": [],
-      "id": "85e68cf8-a495-4596-9d4e-ce461bbc4bbe",
+      "id": "6e454e20-9845-41cd-b7fa-bf2ab257d475",
       "kind": "Container",
-      "parent": "1"
+      "parent": "1",
+      "styles": {
+        "width": "60vw",
+        "backgroundColor": "#00ffb3",
+        "border": "1px solid",
+        "height": "fit-content",
+        "minHeight": "30vh"
+      }
     },
     {
-      "contents": [],
       "parent": "1",
-      "id": "66358339-14ac-4cde-bc45-5e62ea5ade0c",
       "styles": {
-        "backgroundColor": "#6bff89",
+        "alignItems": "center",
         "border": "1px solid",
-        "minHeight": "30vh",
-        "width": 897,
-        "height": 156
+        "display": "flex",
+        "justifyContent": "center",
+        "minHeight": "20px",
+        "padding": "8px",
+        "width": "155px"
       },
-      "kind": "Container"
+      "contents": "Some text",
+      "id": "2895a55a-ecaf-4788-b310-6758b1ff500a",
+      "kind": "Elem"
     }
   ],
   "id": "1",
   "kind": "Container",
-  "parent": "0",
-  "styles": {
-    "border": "1px solid",
-    "height": "fit-content",
-    "minHeight": "70vh",
-    "width": "70vw"
-  }
+  "parent": "0"
 }

@@ -133,12 +133,12 @@ const hostReact = async (req, res) => {
 
       if (title) {
         // Construct the full subdomain URL from the title
-        fullSubdomain = `${title}.webweaver.live`; // Update with your actual domain
+        fullSubdomain = `${title}.webweaver.live:3000`; // Update with your actual domain
       }
     } else {
       instanceIp = req.body.instanceip;
       if (title) {
-        fullSubdomain = `${title}.webweaver.live`; // Update with your actual domain
+        fullSubdomain = `${title}.webweaver.live:3000`; // Update with your actual domain
       }
     }
     console.log(`Instance IP: ${instanceIp}`);

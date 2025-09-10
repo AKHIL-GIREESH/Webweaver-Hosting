@@ -1,5 +1,7 @@
 {
     "ignore": [
-        "web.json"
+      "web.json",
+      "vite.config.js"
     ]
-}
+  }
+  

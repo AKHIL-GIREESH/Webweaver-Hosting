@@ -49,14 +49,21 @@ const HostProject = async (req, res) => {
 
     const { code, title, thumbnail, author } = website;
 
+    // Sanitize title for use as a subdomain
+    const subdomain = title.toLowerCase().replace(/[^a-z0-9-]/g, "-");
+
     console.log("🚀 Initializing Terraform...");
     execSync("terraform init", { cwd: terraformDir, stdio: "inherit" });
 
     console.log("🚀 Applying Terraform...");
-    execSync("terraform apply -auto-approve", {
-      cwd: terraformDir,
-      stdio: "inherit",
-    });
+    // Pass the subdomain as a Terraform variable
+    execSync(
+      `terraform apply -auto-approve -var="subdomain_name=${subdomain}"`,
+      {
+        cwd: terraformDir,
+        stdio: "inherit",
+      }
+    );
 
     console.log("✅ Terraform applied successfully!");
 
@@ -91,10 +98,10 @@ const HostProject = async (req, res) => {
 
     console.log("✅ Vite dev server started remotely!");
 
-    // Build subdomain based on title
+    // Build full subdomain based on title
     let fullSubdomain = "";
     if (title) {
-      fullSubdomain = `${title}.yourdomain.com`;
+      fullSubdomain = `${subdomain}.webweaver.live:5173`;
     }
 
     // Save hosting details to MongoDB
