@@ -7,6 +7,7 @@ const HostingSchema = new Schema({
   thumbnail: { type: String, required: false },
   author: { type: String },
   ip: { type: String, required: true },
+  subdomain: { type: String, required: false },
 });
 
 const Hosting = mongoose.model("Hosting", HostingSchema, "hostings");

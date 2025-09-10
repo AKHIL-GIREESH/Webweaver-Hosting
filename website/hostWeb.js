@@ -91,12 +91,19 @@ const HostProject = async (req, res) => {
 
     console.log("✅ Vite dev server started remotely!");
 
+    // Build subdomain based on title
+    let fullSubdomain = "";
+    if (title) {
+      fullSubdomain = `${title}.yourdomain.com`;
+    }
+
     // Save hosting details to MongoDB
     const newHosting = new Hosting({
       title: title,
       thumbnail: thumbnail || "",
       author: author,
       ip: instanceIp,
+      subdomain: fullSubdomain,
     });
 
     try {
@@ -107,9 +114,12 @@ const HostProject = async (req, res) => {
     }
 
     console.log("✅ Project hosted successfully!");
-    res
-      .status(200)
-      .json({ message: "Hosted successfully", instanceIp, website });
+    res.status(200).json({
+      message: "Hosted successfully",
+      instanceIp,
+      website,
+      url: fullSubdomain,
+    });
   } catch (err) {
     console.error("❌ Error in HostProject:", err);
     res.status(500).json({ error: "Server error" });

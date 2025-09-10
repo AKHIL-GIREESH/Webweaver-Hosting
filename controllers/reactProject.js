@@ -108,8 +108,18 @@ const hostReact = async (req, res) => {
       author,
     } = req.body;
     let instanceIp;
+    const terraformDir = __dirname;
+    const titlePath = path.join(terraformDir, "title.txt");
+    let fullSubdomain = "";
+
     if (instanceip.length === 0) {
-      const terraformDir = __dirname;
+      // Write the title to a title.txt file
+      if (title) {
+        console.log("Writing title to title.txt...");
+        fs.writeFileSync(titlePath, title);
+        console.log("Title saved to title.txt file!");
+      }
+
       console.log("Initializing Terraform...");
       execSync("terraform init", { cwd: terraformDir, stdio: "inherit" });
       console.log("🚀 Running Terraform...");
@@ -120,8 +130,16 @@ const hostReact = async (req, res) => {
       console.log("Terraform applied successfully!");
       const instanceIpPath = path.join(terraformDir, "instance_ip.txt");
       instanceIp = fs.readFileSync(instanceIpPath, "utf8").trim();
+
+      if (title) {
+        // Construct the full subdomain URL from the title
+        fullSubdomain = `${title}.webweaver.live`; // Update with your actual domain
+      }
     } else {
       instanceIp = req.body.instanceip;
+      if (title) {
+        fullSubdomain = `${title}.webweaver.live`; // Update with your actual domain
+      }
     }
     console.log(`Instance IP: ${instanceIp}`);
     console.log("Waiting for instance to initialize...");
@@ -181,6 +199,7 @@ const hostReact = async (req, res) => {
       thumbnail: req.body.thumbnail || "",
       author: author,
       ip: instanceIp,
+      subdomain: fullSubdomain, // Save the full subdomain URL
     });
     try {
       const savedHosting = await newHosting.save();
@@ -189,7 +208,7 @@ const hostReact = async (req, res) => {
       console.error("Error saving hosting entry:", err.message);
     }
     console.log("Instance created & URLs stored successfully!");
-    res.status(200).json({ url: instanceIp });
+    res.status(200).json({ url: fullSubdomain, ip: instanceIp });
   } catch (error) {
     console.error("Error:", error.message);
     res.status(500).json({ error: error.message });

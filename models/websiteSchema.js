@@ -10,6 +10,7 @@ const WebsiteSchema = new Schema({
   tags: { type: [String], required: false },
   code: { type: Map, of: Schema.Types.Mixed, required: false }, // Equivalent to `map[string]interface{}` in Go
   kind: { type: String, required: false },
+  subdomain: { type: String, required: false },
 });
 
 const Website = mongoose.model("Website", WebsiteSchema, "project");
