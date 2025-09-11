@@ -1,43 +1,69 @@
 {
+  "parent": "0",
   "styles": {
-    "overflowY": "scroll",
     "border": "1px solid",
     "maxHeight": "70vh",
     "maxWidth": "70vw",
     "minHeight": "70vh",
-    "minWidth": "70vw"
+    "minWidth": "70vw",
+    "overflowY": "scroll"
   },
   "contents": [
     {
-      "contents": [],
-      "id": "6e454e20-9845-41cd-b7fa-bf2ab257d475",
-      "kind": "Container",
       "parent": "1",
       "styles": {
         "width": "60vw",
-        "backgroundColor": "#00ffb3",
+        "backgroundColor": "#f9c3c3",
         "border": "1px solid",
         "height": "fit-content",
         "minHeight": "30vh"
-      }
+      },
+      "contents": [],
+      "id": "0e52fa14-81c5-43ad-85dc-fba9ae203e66",
+      "kind": "Container"
     },
     {
-      "parent": "1",
+      "id": "1",
+      "kind": "Container",
+      "parent": "0",
       "styles": {
-        "alignItems": "center",
         "border": "1px solid",
-        "display": "flex",
-        "justifyContent": "center",
-        "minHeight": "20px",
-        "padding": "8px",
-        "width": "155px"
+        "height": "fit-content",
+        "minHeight": "70vh",
+        "width": "70vw"
       },
-      "contents": "Some text",
-      "id": "2895a55a-ecaf-4788-b310-6758b1ff500a",
-      "kind": "Elem"
+      "contents": [
+        {
+          "kind": "Container",
+          "parent": "1",
+          "styles": {
+            "borderRadius": "15px",
+            "height": 276,
+            "minHeight": "30vh",
+            "opacity": 1,
+            "width": 992,
+            "backgroundColor": "#bd5151",
+            "border": "1px solid"
+          },
+          "contents": [],
+          "id": "85e68cf8-a495-4596-9d4e-ce461bbc4bbe"
+        },
+        {
+          "contents": [],
+          "id": "66358339-14ac-4cde-bc45-5e62ea5ade0c",
+          "kind": "Container",
+          "parent": "1",
+          "styles": {
+            "backgroundColor": "#6bff89",
+            "border": "1px solid",
+            "height": 156,
+            "minHeight": "30vh",
+            "width": 897
+          }
+        }
+      ]
     }
   ],
   "id": "1",
-  "kind": "Container",
-  "parent": "0"
+  "kind": "Container"
 }

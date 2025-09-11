@@ -1,1 +1,1 @@
-reacttestapp1
+myReactProject
